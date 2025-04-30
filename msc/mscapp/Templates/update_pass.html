@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+{% block title %}Update pass  page{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-xt-6 col-lg-6 mx-auto">
+            {{msg}}
+
+
+         <form method="POST" action="update_pass">
+              {%  csrf_token  %}
+             <input type="hidden" value={{email}} name="emailid"/>
+             <div class="form-group">
+             <label for="password">Enter New Password</label>
+             <input type="password" class="form-control" id="password" name="password">
+
+             </div>
+
+
+  <button type="submit" class="btn btn-dark">SUBMIT</button>
+
+
+</form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

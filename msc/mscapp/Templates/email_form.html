@@ -1,0 +1,30 @@
+{% extends 'master.html' %}
+
+{% block title %}User Login page{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-xt-6 col-lg-6 mx-auto">
+            <h2 class="text-success">{{msg}}</h2>
+                <h2 class="text-success">{{status}}</h2>
+         <form method="POST" action="email_check">
+              {%  csrf_token  %}
+             <div class="form-group">
+         <label for="email">Email</label>
+         <input type="text" class="form-control" id="email" name="email">
+  </div>
+
+
+
+
+
+  <button type="submit" class="btn btn-primary">send email</button>
+
+</form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
