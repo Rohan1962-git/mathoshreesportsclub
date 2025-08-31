@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "mscapp"
 ]
 
 MIDDLEWARE = [
@@ -84,8 +85,6 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"   # for deployment
 STATICFILES_DIRS = [BASE_DIR / "static"]  # local dev
 
-# Whitenoise storage (deployment ready)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
