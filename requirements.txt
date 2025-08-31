@@ -1,3 +1,4 @@
-Django~=5.2
+Django==5.2
 gunicorn
-mysqlclient
+whitenoise
+psycopg2-binary   # only if you use Postgres
