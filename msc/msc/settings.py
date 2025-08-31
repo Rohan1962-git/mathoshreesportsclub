@@ -1,20 +1,13 @@
 import os
 from pathlib import Path
 
-# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "your-secret-key")
+SECRET_KEY = "your-secret-key-here"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = False   # Set to True only in local development
 
-# Allowed hosts
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = ["*"]   # change to your domain if needed
 
 # Application definition
 INSTALLED_APPS = [
@@ -24,12 +17,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "mscapp"
+    "mscapp",   # your app
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",   # Whitenoise for static files
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -43,7 +35,7 @@ ROOT_URLCONF = "msc.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],   # optional templates folder
+        "DIRS": [BASE_DIR / "templates"],  # optional if you use templates/
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -58,10 +50,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "msc.wsgi.application"
 
-# Database (update for MySQL / PostgreSQL if needed)
+# Database (update with your settings)
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",   # Replace with mysql/postgresql when needed
+        "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
@@ -74,17 +66,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# Internationalization
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# 🚀 Minimal static setup (Django needs it internally, even if unused)
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"   # for deployment
-STATICFILES_DIRS = [BASE_DIR / "static"]  # local dev
 
-
-# Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
