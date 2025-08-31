@@ -1,120 +1,91 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^lre0&_co-5_9kng$&69-eo@*7sjg&szm-p0kwuk#vaaxeu^#n'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "your-secret-key")
 
-# ------------------------------
-# Debug / Host Handling
-# ------------------------------
-DEBUG = os.getenv("DEBUG", "True") == "True"   # will read from env variable
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = [
-        "mathoshreesportsclub.onrender.com",  # your Render domain
-        "127.0.0.1",
-        "localhost",
-    ]
-
+# Allowed hosts
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'mscapp.apps.MscappConfig'
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",   # Whitenoise for static files
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'msc.urls'
+ROOT_URLCONF = "msc.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'Templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],   # optional templates folder
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'msc.wsgi.application'
+WSGI_APPLICATION = "msc.wsgi.application"
 
-
-# ------------------------------
-# Database (SQLite for now)
-# ------------------------------
+# Database (update for MySQL / PostgreSQL if needed)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",   # Replace with mysql/postgresql when needed
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
-
-# ------------------------------
 # Password validation
-# ------------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
-# ------------------------------
 # Internationalization
-# ------------------------------
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-
-# ------------------------------
 # Static files
-# ------------------------------
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # for deployment
-STATICFILES_DIRS = [BASE_DIR / 'static']  # for local development
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"   # for deployment
+STATICFILES_DIRS = [BASE_DIR / "static"]  # local dev
 
+# Whitenoise storage (deployment ready)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# ------------------------------
 # Default primary key field type
-# ------------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# ------------------------------
-# Sending Mail (Gmail SMTP)
-# ------------------------------
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'rohan19622@gmail.com'
-EMAIL_HOST_PASSWORD = 'btie heqo vsul vaiw'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
